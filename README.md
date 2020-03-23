@@ -5,7 +5,7 @@ ORE is an Online Recipe Exchange plattform.
 
 ## Usage
 
-Useless.
+TODO.
 
 ## License
 None. It's private.
