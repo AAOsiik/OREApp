@@ -1,0 +1,25 @@
+ul{
+    list-style-type: none;
+}
+
+ul li{
+    float: right;
+    padding: 20px;
+}
+
+ul li a{
+    font-size: 1.5rem;
+    color: black;
+}
+
+ul li a:hover{
+    text-decoration: none;
+}
+
+.center{
+    text-align: center;
+}
+
+.clear{
+    clear:both;
+}
