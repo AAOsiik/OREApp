@@ -1,10 +1,11 @@
-/OREApp/build/
-/OREApp/dist/
+OREApp/build/
+OREApp/dist/
 **/nbproject/private/
 **/nbproject/Makefile-*.mk
 **/nbproject/Package-*.bash
-/OREApp/build/
-/OREApp/nbbuild/
-/OREApp/dist/
-/OREApp/nbdist/
+OREApp/build/
+OREApp/nbbuild/
+OREApp/nbproject/
+OREApp/dist/
+OREApp/nbdist/
 .nb-gradle/
