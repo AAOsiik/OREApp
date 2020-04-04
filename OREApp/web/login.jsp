@@ -41,14 +41,15 @@
 
         <div class="row logForm">
             <div class="col-md-6 marginCenter">
-                <form>
+                <form method="post" action="LoginController" >
                     <div class="form-group">
                         <label for="user">Email/Username</label>
-                        <input type="text" class="form-control" id="user" placeholder="Enter email or username">
+                        <input type="text" name="email" class="form-control" id="user" placeholder="Enter email or username">
+                        <label class="error" id="uname-error">${LOGIN_ERROR}</label>
                     </div>
                     <div class="form-group">
                         <label for="password1">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password"><br>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Password"><br>
                     </div>
                     <div class="form-group center">
                         <button type="submit" class="btn btn-info">Login</button>
