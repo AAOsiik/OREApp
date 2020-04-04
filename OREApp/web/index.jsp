@@ -15,6 +15,11 @@
     <body>
         <%@include file="/WEB-INF/jspf/nav.jspf" %>
         <%@include file="/WEB-INF/jspf/mid_logo.jspf" %>
+        <c:if test="${not empty sessionScope.user}">
+            <div class="col-md-12 center">
+                <label>Welcome back, ${user}!</label>
+            </div>
+        </c:if>
 
         <div class="row searchBar">
             <div class="col-md-6 marginCenter">
