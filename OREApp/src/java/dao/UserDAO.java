@@ -44,7 +44,7 @@ public class UserDAO {
             // Statement
             Statement instr = connection.createStatement();
             // Search for users
-            String sql = "SELECT * FROM users WHERE username = '" + username + "'";
+            String sql = "SELECT * FROM users WHERE email = '" + username + "'";
             ResultSet rs = instr.executeQuery(sql);
             if (rs.next()) {
                 // Unique User
@@ -63,7 +63,7 @@ public class UserDAO {
         connection = DBConnection.getInstance();
         try {
             PreparedStatement prepStmt = connection
-                    .prepareStatement("SELECT * FROM users u WHERE u.username = ? AND u.password = ?");
+                    .prepareStatement("SELECT * FROM users u WHERE u.email = ? AND u.password = ?");
             prepStmt.setString(1, uname);
             prepStmt.setString(2, Hash.getHash(password));
             ResultSet rs = prepStmt.executeQuery();
