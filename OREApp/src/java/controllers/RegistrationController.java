@@ -5,7 +5,7 @@
  */
 package controllers;
 
-
+import dao.UserDAO;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
-
+import model.User;
 
 @WebServlet(name = "RegistrationController", urlPatterns = {"/RegistrationController"})
 public class RegistrationController extends HttpServlet {
-    
+    RequestDispatcher rd;
+    UserDAO userDAO = UserDAO.getInstance();
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -53,10 +54,32 @@ public class RegistrationController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        
-        RequestDispatcher rd = request.getRequestDispatcher("/RegistrationView");
-        rd.forward(request, response);
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String error = "";
+        boolean hasErrors = false;
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        // Create User
+        User user = new User();
+        user.setEmail(email);
+        // Check if user already exists
+        if (userDAO.userExists(email)) {
+            hasErrors = true;
+            error = "User with this email already exists";
         }
+        if (hasErrors) {
+            // Set Attributes
+            request.setAttribute("USERINPUT", user);
+            request.setAttribute("ERRORS", error);
+            rd = request.getRequestDispatcher("/register.jsp");
+            rd.forward(request, response);
+        } else {
+            user.setPassword(password);
+            userDAO.createUser(user);
+            
+            rd = request.getRequestDispatcher("/index.jsp");
+            rd.forward(request, response);
+        }
+    }
 
 }
