@@ -17,8 +17,10 @@ import model.User;
 
 @WebServlet(name = "RegistrationController", urlPatterns = {"/RegistrationController"})
 public class RegistrationController extends HttpServlet {
+
     RequestDispatcher rd;
     UserDAO userDAO = UserDAO.getInstance();
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -75,10 +77,16 @@ public class RegistrationController extends HttpServlet {
             rd.forward(request, response);
         } else {
             user.setPassword(password);
-            userDAO.createUser(user);
-            
-            rd = request.getRequestDispatcher("/index.jsp");
-            rd.forward(request, response);
+            if (userDAO.createUser(user)) {
+                rd = request.getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);
+            } else {
+                error = "Error creating user.";
+                request.setAttribute("USERINPUT", user);
+                request.setAttribute("ERRORS", error);
+                rd = request.getRequestDispatcher("/register.jsp");
+                rd.forward(request, response);
+            }
         }
     }
 
