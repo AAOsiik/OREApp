@@ -1,3 +1,4 @@
+[Image of OREApp](https://github.com/AAOsiik/OREApp/blob/master/Logo/ORE_Logo.png)
 # OREApp
 Our project **OREApp** is an online recipe exchange application. Users canupload their favourite recipes and provide detailed ingredient lists, steps andalso pictures. There may also be room for interaction, such as marking recipesas a personal favorite and leaving comments.
 ## Features
