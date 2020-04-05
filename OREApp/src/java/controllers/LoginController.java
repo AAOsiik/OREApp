@@ -37,12 +37,12 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Validation
-        String email = request.getParameter("email");
+        String uname = request.getParameter("uname");
         String password = request.getParameter("password");
+        String user = "";
         // Check User
-        if (userDAO.credentialsMatch(email, password)) {
+        if ((user = userDAO.credentialsMatch(uname, password)) != "") {
             // Set email as username
-            String user = email.substring(0,email.indexOf("@"));
             request.getSession().setAttribute("user", user);
             rd = request.getRequestDispatcher("index.jsp");
             rd.forward(request, response);

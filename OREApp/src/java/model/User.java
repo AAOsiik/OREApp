@@ -15,16 +15,20 @@ public class User implements Serializable {
 
     private String email;
     private String password;
-    
+
+    private String uname;
+
     private String firstName;
     private String lastName;
+    private int isComplete;
 //    // TODO: how to best serialize them?
 //    private Address address;
 //    private List<Recipe> recipes;
 //    private List<Recipe> favorites;
-    
-    public User(){}
-    
+
+    public User() {
+    }
+
     public String getEmail() {
         return email;
     }
@@ -39,6 +43,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
     public String getFirstName() {
@@ -56,5 +68,14 @@ public class User implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public int getIsComplete() {
+        return isComplete;
+    }
+
+    public void setIsComplete(int isComplete) {
+        this.isComplete = isComplete;
+    }
+
     
 }

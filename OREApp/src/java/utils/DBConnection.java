@@ -26,7 +26,7 @@ public class DBConnection {
 	private DBConnection() {
 		try {
 			Context ctx = new InitialContext();
-			DataSource ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/TestDB");
+			DataSource ds = (DataSource)ctx.lookup("java:/comp/env/jdbc/jdbcex");
 			connection = ds.getConnection();
 		} catch (Exception e) {
 			e.printStackTrace();

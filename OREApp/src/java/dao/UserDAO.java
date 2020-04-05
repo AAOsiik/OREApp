@@ -9,6 +9,7 @@ import java.sql.*;
 import model.User;
 import utils.DBConnection;
 import utils.Hash;
+
 /**
  *
  * @author Alexander
@@ -33,48 +34,62 @@ public class UserDAO {
      * Checks whether username already exists in userss database.
      *
      * @param username
+     * @param email
      * @return Boolean whether username exists or not
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public boolean userExists(String username) {
+    public String userExists(String username, String email) {
 
         connection = DBConnection.getInstance();
         try {
             // Statement
             Statement instr = connection.createStatement();
             // Search for users
-            String sql = "SELECT * FROM users WHERE email = '" + username + "'";
+            String sql = "SELECT * FROM users WHERE email = '" + email + "'";
             ResultSet rs = instr.executeQuery(sql);
+
             if (rs.next()) {
-                // Unique User
-                rs.close();
-                instr.clearBatch();
-                return true;
+                return "User with this email already exists";
+            } else {
+                sql = "SELECT * FROM users WHERE username = '" + username + "'";
+                rs = instr.executeQuery(sql);
+
+                if (rs.next()) {
+                    return "Username alreday taken, please chose another one";
+                } else {
+                    instr.clearBatch();
+                    rs.close();
+                    instr.clearBatch();
+                    return "";
+                }
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return false;
+        return "Error";
     }
 
-    public boolean credentialsMatch(String uname, String password) {
+    public String credentialsMatch(String uname, String password) {
         connection = DBConnection.getInstance();
         try {
             PreparedStatement prepStmt = connection
-                    .prepareStatement("SELECT * FROM users u WHERE u.email = ? AND u.password = ?");
+                    .prepareStatement("SELECT * FROM users u WHERE (u.email = ? OR u.username = ?) AND u.password = ?");
             prepStmt.setString(1, uname);
-            prepStmt.setString(2, Hash.getHash(password));
+            prepStmt.setString(2, uname);
+            prepStmt.setString(3, Hash.getHash(password));
             ResultSet rs = prepStmt.executeQuery();
+            String psw = Hash.getHash(password);
             if (rs.next()) {
+                String ret = rs.getString("username");
                 rs.close();
-                return true;
+                return ret;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return "";
     }
 
     /**
@@ -91,9 +106,11 @@ public class UserDAO {
         // Add user
         try {
             PreparedStatement stm = connection.prepareStatement(
-                    "INSERT INTO users(email, password) VALUES ( ? , ? );");
-            stm.setString(1, user.getEmail());
-            stm.setString(2, Hash.getHash(user.getPassword()));
+                    "INSERT INTO users(username, email, password, complete) VALUES ( ? , ? , ?, ?);");
+            stm.setString(1, user.getUname());
+            stm.setString(2, user.getEmail());
+            stm.setString(3, Hash.getHash(user.getPassword()));
+            stm.setString(4, Integer.toString(user.getIsComplete()));
             // TODO: Adjust to modify User Data
             // execute
             stm.execute();
@@ -106,9 +123,8 @@ public class UserDAO {
         }
         return false;
     }
-    
-    
-    public boolean modifyUser(User user){
+
+    public boolean modifyUser(User user) {
         //TODO: Modify or add extra User Data
         return false;
     }

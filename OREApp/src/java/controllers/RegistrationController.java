@@ -61,13 +61,14 @@ public class RegistrationController extends HttpServlet {
         boolean hasErrors = false;
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String username = request.getParameter("uname");
         // Create User
         User user = new User();
         user.setEmail(email);
+        user.setUname(username);
         // Check if user already exists
-        if (userDAO.userExists(email)) {
+        if ((error = userDAO.userExists(username, email)) != "") {
             hasErrors = true;
-            error = "User with this email already exists";
         }
         if (hasErrors) {
             // Set Attributes
@@ -77,6 +78,7 @@ public class RegistrationController extends HttpServlet {
             rd.forward(request, response);
         } else {
             user.setPassword(password);
+            user.setIsComplete(0);
             if (userDAO.createUser(user)) {
                 rd = request.getRequestDispatcher("/index.jsp");
                 rd.forward(request, response);
