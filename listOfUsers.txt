@@ -2,3 +2,4 @@ Just a list of users created for testing (in case we forget the password):
 
 	user:		email:				password:
 1) 	g0pN1k69	h4ck3r@government.ru		psw1234
+2)	new_user	new@newer.com			abc
