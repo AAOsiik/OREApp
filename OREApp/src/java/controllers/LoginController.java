@@ -44,12 +44,13 @@ public class LoginController extends HttpServlet {
         if ((user = userDAO.credentialsMatch(uname, password)) != "") {
             // Set email as username
             request.getSession().setAttribute("user", user);
-            rd = request.getRequestDispatcher("index.jsp");
+            rd = request.getRequestDispatcher("Home");
             rd.forward(request, response);
         } else {
             String error = "User or password incorrect";
             request.setAttribute("LOGIN_ERROR", error);
-            rd = request.getRequestDispatcher("login.jsp");
+            request.setAttribute("uname", request.getParameter("uname"));
+            rd = request.getRequestDispatcher("LoginView");
             rd.forward(request, response);
         }
     }

@@ -52,3 +52,12 @@ ul li a:hover{
 .searchBar{
     margin-top: 5%;
 }
+
+.profileBox{
+    background-color: #EEEDE8;
+    padding: 5%;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.error{color:red;}

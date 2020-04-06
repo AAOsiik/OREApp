@@ -124,8 +124,59 @@ public class UserDAO {
         return false;
     }
 
+    /**
+     *
+     * Updates users first and last name
+     *
+     * @param user
+     * @return
+     */
     public boolean modifyUser(User user) {
-        //TODO: Modify or add extra User Data
+        connection = DBConnection.getInstance();
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(
+                    "UPDATE users "
+                    + "SET firstname = ?, lastname = ? "
+                    + "WHERE username = ?");
+            stm.setString(1, user.getFirstName());
+            stm.setString(2, user.getLastName());
+            stm.setString(3, user.getUname());
+
+            stm.execute();
+            stm.clearBatch();
+            connection.close();
+            return true;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         return false;
+    }
+
+    public User getUserInfo(String uname) {
+        connection = DBConnection.getInstance();
+
+        try {
+            PreparedStatement stm = connection.prepareStatement(
+                    "SELECT * FROM users where username = ?");
+            stm.setString(1, uname);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setUname(rs.getString("username"));
+                user.setFirstName(rs.getString("firstname"));
+                user.setLastName(rs.getString("lastname"));
+                user.setEmail(rs.getString("email"));
+                rs.close();
+                connection.close();
+                return user;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 }

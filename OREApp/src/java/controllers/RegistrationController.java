@@ -74,19 +74,19 @@ public class RegistrationController extends HttpServlet {
             // Set Attributes
             request.setAttribute("USERINPUT", user);
             request.setAttribute("ERRORS", error);
-            rd = request.getRequestDispatcher("/register.jsp");
+            rd = request.getRequestDispatcher("RegistrationView");
             rd.forward(request, response);
         } else {
             user.setPassword(password);
             user.setIsComplete(0);
             if (userDAO.createUser(user)) {
-                rd = request.getRequestDispatcher("/index.jsp");
+                rd = request.getRequestDispatcher("Home");
                 rd.forward(request, response);
             } else {
                 error = "Error creating user.";
                 request.setAttribute("USERINPUT", user);
                 request.setAttribute("ERRORS", error);
-                rd = request.getRequestDispatcher("/register.jsp");
+                rd = request.getRequestDispatcher("RegistrationView");
                 rd.forward(request, response);
             }
         }

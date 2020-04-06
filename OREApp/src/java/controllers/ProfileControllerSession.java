@@ -5,20 +5,26 @@
  */
 package controllers;
 
+import dao.UserDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
- * @author Alexander
+ * @author Kri
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "ProfileControllerSession", urlPatterns = {"/ProfileControllerSession"})
+public class ProfileControllerSession extends HttpServlet {
+
+    RequestDispatcher rd;
+    UserDAO userDAO = UserDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,8 +37,15 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("user", null);
-        request.getRequestDispatcher("Home").forward(request, response);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            // Session is already created
+            User user = userDAO.getUserInfo(request.getSession().getAttribute("user").toString());
+            request.setAttribute("USERINPUT", user);
+        }
+        rd = request.getRequestDispatcher("ProfileView");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

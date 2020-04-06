@@ -13,18 +13,19 @@
         <div class="col-md-12">
             <ul>
                 <c:if test="${empty sessionScope.user}">
-                    <li><a href="register.jsp">REGISTER</a></li>
-                </c:if>
-                <c:choose>
-                    <c:when test="${empty sessionScope.user}">
-                        <li><a href="login.jsp">LOGIN</a></li>
-                    </c:when>
-                    <c:otherwise>
+                    <li><a href="RegistrationView">REGISTER</a></li>
+                    </c:if>
+                    <c:choose>
+                        <c:when test="${empty sessionScope.user}">
+                        <li><a href="LoginView">LOGIN</a></li>
+                        </c:when>
+                        <c:otherwise>
                         <li><a href="LogoutController">LOGOUT</a></li>
-                    </c:otherwise>    
-                </c:choose>
-                
-                <li><a href="index.jsp">HOME</a></li>                        
+                        <li><a href="ProfileControllerSession">PROFILE</a></li>
+                        </c:otherwise>    
+                    </c:choose>
+
+                <li><a href="Home">HOME</a></li>                        
             </ul>
         </div>
     </div>

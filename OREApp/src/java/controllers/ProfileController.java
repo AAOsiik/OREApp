@@ -5,20 +5,26 @@
  */
 package controllers;
 
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
- * @author Alexander
+ * @author Kri
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "ProfileController", urlPatterns = {"/ProfileController"})
+public class ProfileController extends HttpServlet {
+
+    RequestDispatcher rd;
+    UserDAO userDAO = UserDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,8 +37,21 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("user", null);
-        request.getRequestDispatcher("Home").forward(request, response);
+
+        User user = new User();
+        user.setFirstName(request.getParameter("fName"));
+        user.setLastName(request.getParameter("lName"));
+        user.setEmail(request.getParameter("email"));
+        user.setUname(request.getSession().getAttribute("user").toString());
+
+        if (userDAO.modifyUser(user)) //user was updated successfully
+        {
+            request.setAttribute("USERINPUT", user);
+        } else {
+            request.setAttribute("ERRORS", "Ops.. something went wrong");
+        }
+        rd = request.getRequestDispatcher("ProfileView");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

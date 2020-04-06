@@ -7,9 +7,21 @@
             <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/login.jsp</file>
             <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/controllers/RegistrationController.java</file>
             <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/utils/DBConnection.java</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/WEB-INF/jspf/noSessionError.jspf</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/style/style.css</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/controllers/ProfileController.java</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/profile.jsp</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/WEB-INF/jspf/header.jspf</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/register.jsp</file>
             <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/index.jsp</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/WEB-INF/jspf/nav.jspf</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/WEB-INF/jspf/mid_logo.jspf</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/controllers/LogoutController.java</file>
             <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/dao/UserDAO.java</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/web/WEB-INF/web.xml</file>
             <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/controllers/LoginController.java</file>
+            <file>file:/C:/Users/Kri/Desktop/erasmusWork/Web%20Application%20Development/OREApp/OREApp/src/java/controllers/ProfileControllerSession.java</file>
         </group>
     </open-files>
 </project-private>
