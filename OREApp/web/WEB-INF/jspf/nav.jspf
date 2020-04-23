@@ -22,9 +22,10 @@
                         <c:otherwise>
                         <li><a href="LogoutController">LOGOUT</a></li>
                         <li><a href="ProfileControllerSession">PROFILE</a></li>
+                        <li><a href="addRecipe.jsp">ADD RECIPE</a></li>
                         </c:otherwise>    
                     </c:choose>
-
+                <li><a href="recipes.jsp">SHOW RECIPES</a></li>
                 <li><a href="Home">HOME</a></li>                        
             </ul>
         </div>
