@@ -1,0 +1,150 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import model.Recipe;
+import utils.DBConnection;
+
+/**
+ *
+ * @author Alexander
+ */
+public class RecipeDAO {
+
+    private Connection connection;
+    private static RecipeDAO instance;
+
+    public static RecipeDAO getInstance() {
+        if (instance == null) {
+            instance = new RecipeDAO();
+        }
+        return instance;
+    }
+
+    private RecipeDAO() {
+    }
+
+    /**
+     * Returns all available items
+     *
+     * @return List of Products
+     */
+    public List<Recipe> getRecipes() {
+        String sql = "select * from recipes";
+        List<Recipe> recipes = new ArrayList<>();
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+            ResultSet rs = prepStmt.executeQuery();
+            while (rs.next()) {
+                Recipe recipe = new Recipe();
+                recipe.setId(rs.getInt("id"));
+                recipe.setUserId(rs.getInt("userid"));
+                recipe.setTitle(rs.getString("title"));
+                recipe.setDescription(rs.getString("description"));
+                recipe.setCategory(rs.getString("category"));
+                recipe.setDifficulty(rs.getString("difficulty"));
+                recipe.setTags(rs.getString("tags"));
+                recipe.setPicture(rs.getString("picture"));
+
+                recipes.add(recipe);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return recipes;
+    }
+
+    /**
+     * Creates a new recipe
+     *
+     * @param recipe
+     * @return
+     */
+    public int createRecipe(Recipe recipe) {
+        // Create Product
+        String sql = "INSERT INTO recipes(userid, title, description, category, difficulty, tags) "
+                + "VALUES ( ? , ? , ? , ? , ? , ?);";
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql,
+                        Statement.RETURN_GENERATED_KEYS);) {
+            prepStmt.setInt(1, recipe.getUserId());
+            prepStmt.setString(2, recipe.getTitle());
+            prepStmt.setString(3, recipe.getDescription());
+            prepStmt.setString(4, recipe.getCategory());
+            prepStmt.setString(5, recipe.getDifficulty());
+            prepStmt.setString(6, recipe.getTags());
+
+            // execute
+            prepStmt.executeUpdate();
+            int last_inserted_id = 0;
+            ResultSet rs = prepStmt.getGeneratedKeys();
+            if (rs.next()) {
+                last_inserted_id = rs.getInt(1);
+            }
+            // close
+            prepStmt.clearBatch();
+            connection.close();
+            return last_inserted_id;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean recipeExists(String title) {
+
+        connection = DBConnection.getInstance();
+        try {
+            // Statement
+            Statement instr = connection.createStatement();
+            // Search for products
+            String sql = "SELECT * FROM recipes WHERE title = '" + title + "'";
+            ResultSet rs = instr.executeQuery(sql);
+            if (rs.next()) {
+                // Recipe exists
+                rs.close();
+                instr.clearBatch();
+                return true;
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Adds image to existing recipe
+     *
+     * @param recipe
+     * @return
+     */
+    public boolean addPictureToRecipe(int id, String path) {
+        // Add to Recipe
+        String sql = "UPDATE recipes SET picture = ? WHERE (id = ?);";
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+            prepStmt.setString(1, path);
+            prepStmt.setInt(2, id);
+            // execute
+            prepStmt.executeUpdate();
+            // close
+            prepStmt.clearBatch();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+}
