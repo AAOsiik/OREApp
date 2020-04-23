@@ -71,7 +71,7 @@ public class UserDAO {
         return "Error";
     }
 
-    public String credentialsMatch(String uname, String password) {
+    public User credentialsMatch(String uname, String password) {
         connection = DBConnection.getInstance();
         try {
             PreparedStatement prepStmt = connection
@@ -82,14 +82,16 @@ public class UserDAO {
             ResultSet rs = prepStmt.executeQuery();
             String psw = Hash.getHash(password);
             if (rs.next()) {
-                String ret = rs.getString("username");
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUname(rs.getString("username"));
                 rs.close();
-                return ret;
+                return user;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
     /**

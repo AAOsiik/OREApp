@@ -13,6 +13,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
+    private int id;
     private String email;
     private String password;
 
@@ -26,9 +27,16 @@ public class User implements Serializable {
 //    private List<Recipe> recipes;
 //    private List<Recipe> favorites;
 
-    public User() {
+    public User() {}
+    
+    public int getId() {
+        return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getEmail() {
         return email;
     }

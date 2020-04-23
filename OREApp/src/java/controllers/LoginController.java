@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
@@ -39,11 +40,12 @@ public class LoginController extends HttpServlet {
         // Validation
         String uname = request.getParameter("uname");
         String password = request.getParameter("password");
-        String user = "";
+        User user = new User();
         // Check User
-        if ((user = userDAO.credentialsMatch(uname, password)) != "") {
+        if ((user = userDAO.credentialsMatch(uname, password)) != null) {
             // Set email as username
-            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute("user", user.getUname());
+            request.getSession().setAttribute("userid", user.getId());
             rd = request.getRequestDispatcher("Home");
             rd.forward(request, response);
         } else {
