@@ -15,28 +15,6 @@
 
         <%@include file="/WEB-INF/jspf/nav.jspf" %>
 
-
-        <!--        <div class="container">
-                    <nav class="navbar navbar-expand-lg navbar-light">
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="index.jsp">HOME<span class="sr-only">(current)</span></a>
-                                </li>
-                            </ul>
-                            <form class="form-inline my-2 my-lg-0">
-                                <ul class="navbar-nav mr-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="login.jsp">LOGIN</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="register.jsp">REGISTER</a>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                    </nav>-->
-
         <%@include file="/WEB-INF/jspf/mid_logo.jspf" %>
 
         <div class="row logForm">
