@@ -24,8 +24,8 @@
         <div class="row searchBar">
             <div class="col-md-6 marginCenter">
                 <!-- Search form -->
-                <form class="form-inline">
-                    <input class="form-control form-control-sm marginCenter" type="text" placeholder="Search" aria-label="Search"style="width: 100%;">
+                <form class="form-inline" action="SearchController" method="GET">
+                    <input name="search" id="search" class="form-control form-control-sm marginCenter" type="text" placeholder="Search" aria-label="Search"style="width: 100%;">
                 </form>
             </div>
         </div>

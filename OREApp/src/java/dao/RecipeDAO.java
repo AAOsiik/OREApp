@@ -71,17 +71,17 @@ public class RecipeDAO {
      */
     public int createRecipe(Recipe recipe) {
         // Create Product
-        String sql = "INSERT INTO recipes(userid, title, description, category, difficulty, tags) "
+        String sql = "INSERT INTO recipes(userid, title, category, difficulty, tags, description) "
                 + "VALUES ( ? , ? , ? , ? , ? , ?);";
         try (Connection connection = DBConnection.getInstance();
                 PreparedStatement prepStmt = connection.prepareStatement(sql,
                         Statement.RETURN_GENERATED_KEYS);) {
             prepStmt.setInt(1, recipe.getUserId());
             prepStmt.setString(2, recipe.getTitle());
-            prepStmt.setString(3, recipe.getDescription());
-            prepStmt.setString(4, recipe.getCategory());
-            prepStmt.setString(5, recipe.getDifficulty());
-            prepStmt.setString(6, recipe.getTags());
+            prepStmt.setString(3, recipe.getCategory());
+            prepStmt.setString(4, recipe.getDifficulty());
+            prepStmt.setString(5, recipe.getTags());
+            prepStmt.setString(6, recipe.getDescription());
 
             // execute
             prepStmt.executeUpdate();
@@ -145,6 +145,35 @@ public class RecipeDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Recipe> searchRecipes(String search) {
+        List<Recipe> recipes = new ArrayList<>();
+        
+        try (Connection connection = DBConnection.getInstance()) {
+            search = search.toUpperCase();
+            PreparedStatement pstmt = connection.prepareStatement(
+                    "SELECT * FROM recipes WHERE UPPER(title) LIKE ? ESCAPE '!'");
+            pstmt.setString(1, "%" + search + "%");
+            ResultSet rs = pstmt.executeQuery();
+            
+            while(rs.next()){
+                Recipe recipe = new Recipe();
+                recipe.setId(rs.getInt("id"));
+                recipe.setUserId(rs.getInt("userid"));
+                recipe.setTitle(rs.getString("title"));
+                recipe.setDescription(rs.getString("description"));
+                recipe.setCategory(rs.getString("category"));
+                recipe.setDifficulty(rs.getString("difficulty"));
+                recipe.setTags(rs.getString("tags"));
+                recipe.setPicture(rs.getString("picture"));
+
+                recipes.add(recipe);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return recipes;
     }
 
 }

@@ -11,22 +11,20 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <ul>
-                <c:if test="${empty sessionScope.user}">
-                    <li><a href="RegistrationView">REGISTER</a></li>
-                    </c:if>
+            <ul class="mt-3">
+                <li><a href="Home">HOME</a></li>  
+                <li><a href="RecipesController">SHOW RECIPES</a></li>
                     <c:choose>
-                        <c:when test="${empty sessionScope.user}">
-                        <li><a href="LoginView">LOGIN</a></li>
+                        <c:when test="${not empty sessionScope.user}">
+                        <li><a href="addRecipe.jsp">ADD RECIPE</a></li>
+                        <li><a href="ProfileControllerSession">PROFILE</a></li>
+                        <li><a href="LogoutController">LOGOUT</a></li>
                         </c:when>
                         <c:otherwise>
-                        <li><a href="LogoutController">LOGOUT</a></li>
-                        <li><a href="ProfileControllerSession">PROFILE</a></li>
-                        <li><a href="addRecipe.jsp">ADD RECIPE</a></li>
+                        <li><a href="LoginView">LOGIN</a></li>
+                        <li><a href="RegistrationView">REGISTER</a></li>
                         </c:otherwise>    
                     </c:choose>
-                <li><a href="recipes.jsp">SHOW RECIPES</a></li>
-                <li><a href="Home">HOME</a></li>                        
             </ul>
         </div>
     </div>

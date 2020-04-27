@@ -22,6 +22,7 @@
         <description>ServletContextListener</description>
         <listener-class>listeners.contextListener</listener-class>
     </listener>
+    
     <servlet>
         <servlet-name>Home</servlet-name>
         <jsp-file>/index.jsp</jsp-file>
@@ -46,6 +47,12 @@
         <servlet-name>FileServlet</servlet-name>
         <servlet-class>controllers.FileServlet</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>RecipesView</servlet-name>
+        <jsp-file>/recipes.jsp</jsp-file>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
         <url-pattern>/Home</url-pattern>
@@ -61,5 +68,9 @@
     <servlet-mapping>
         <servlet-name>ProfileView</servlet-name>
         <url-pattern>/ProfileView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecipesView</servlet-name>
+        <url-pattern>/RecipesView</url-pattern>
     </servlet-mapping>
 </web-app>
