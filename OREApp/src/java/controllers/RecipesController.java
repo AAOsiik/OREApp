@@ -6,6 +6,7 @@
 package controllers;
 
 import dao.RecipeDAO;
+import dao.UserRecipeDAO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Recipe;
+import model.UserRecipe;
 
 /**
  *
@@ -24,7 +26,7 @@ import model.Recipe;
 @WebServlet(name = "RecipesController", urlPatterns = {"/RecipesController"})
 public class RecipesController extends HttpServlet {
 
-    RecipeDAO recipeDAO = RecipeDAO.getInstance();
+    UserRecipeDAO recipeDAO = UserRecipeDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,8 +41,8 @@ public class RecipesController extends HttpServlet {
             throws ServletException, IOException {
 
         // Get Products
-        List<Recipe> recipes = new ArrayList<>();
-        recipes = recipeDAO.getRecipes();
+        List<UserRecipe> recipes = new ArrayList<>();
+        recipes = recipeDAO.getCombinedRecipesInfo();
 
         request.getServletContext().setAttribute("RECIPES", recipes);
         RequestDispatcher rd = request.getRequestDispatcher("RecipesView");

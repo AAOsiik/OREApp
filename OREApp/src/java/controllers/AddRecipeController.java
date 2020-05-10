@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import model.Recipe;
+import model.UserRecipe;
 
 /**
  *
@@ -47,14 +48,16 @@ public class AddRecipeController extends HttpServlet {
 		boolean hasErrors = false;
                 
                 int userId = Integer.parseInt(request.getSession().getAttribute("userid").toString());
+                String username = request.getSession().getAttribute("user").toString();
 		String title = request.getParameter("title");
 		String description = request.getParameter("description");
                 String category = request.getParameter("category");
                 String difficulty = request.getParameter("difficulty");
                 String tags = request.getParameter("tags");
                 
-		Recipe recipe = new Recipe();
+		UserRecipe recipe = new UserRecipe();
                 recipe.setUserId(userId);
+                recipe.setUsername(username);
 		recipe.setTitle(title);
 		recipe.setDescription(description);
 		recipe.setCategory(category);
@@ -77,7 +80,7 @@ public class AddRecipeController extends HttpServlet {
 		// Otherwise, save 
 		int id = recipeDAO.createRecipe(recipe);	
 		recipe.setId(id);
-		List<Recipe> recipes = (List<Recipe>) request.getServletContext().getAttribute("RECIPES");
+		List<UserRecipe> recipes = (List<UserRecipe>) request.getServletContext().getAttribute("RECIPES");
 		recipes.add(recipe);
 		request.getServletContext().setAttribute("RECIPES", recipes);
 		
