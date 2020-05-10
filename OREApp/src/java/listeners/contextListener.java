@@ -6,11 +6,14 @@
 package listeners;
 
 import dao.RecipeDAO;
+import dao.UserDAO;
+import dao.UserRecipeDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import model.Recipe;
+import model.UserRecipe;
 
 /**
  * Web application lifecycle listener.
@@ -19,7 +22,11 @@ import model.Recipe;
  */
 public class contextListener implements ServletContextListener {
 
-    RecipeDAO recipeDAO = RecipeDAO.getInstance();
+    // OLD
+    // RecipeDAO recipeDAO = RecipeDAO.getInstance();
+    // NEW
+    UserRecipeDAO userRecipeDAO = UserRecipeDAO.getInstance();
+    
      /**
      * Default constructor. 
      */
@@ -29,8 +36,8 @@ public class contextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         // Get Products
-    	List<Recipe> recipes = new ArrayList<>();
-    	recipes = recipeDAO.getRecipes();
+    	List<UserRecipe> recipes = new ArrayList<>();
+    	recipes = userRecipeDAO.getCombinedRecipesInfo();
     	// Set Context
     	sce.getServletContext().setAttribute("RECIPES", recipes);
     }
