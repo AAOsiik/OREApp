@@ -167,6 +167,7 @@ public class UserDAO {
 
             if (rs.next()) {
                 User user = new User();
+                user.setId(rs.getInt("id"));
                 user.setUname(rs.getString("username"));
                 user.setFirstName(rs.getString("firstname"));
                 user.setLastName(rs.getString("lastname"));
@@ -181,4 +182,32 @@ public class UserDAO {
 
         return null;
     }
+    
+    public User getUserFromID(int id) {
+        connection = DBConnection.getInstance();
+        try {
+            PreparedStatement stm = connection.prepareStatement(
+                    "SELECT * FROM users where id = ?");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setId(id);
+                user.setUname(rs.getString("username"));
+                user.setFirstName(rs.getString("firstname"));
+                user.setLastName(rs.getString("lastname"));
+                user.setEmail(rs.getString("email"));
+                rs.close();
+                connection.close();
+                return user;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    
 }
