@@ -23,7 +23,7 @@
                     $("#recipeModal-title").html(title);
                     $("#recipeModal-desc").html(desc);
                     $("#recipeModal-category").html("Category: " + category);
-                    $("#recipeModal-difficulty").html(difficulty);
+                    $("#recipeModal-difficulty").html("Difficulty: " + difficulty);
                 });
             }
         </script>
@@ -45,8 +45,9 @@
                     <div class="col-md-6 px-3">
                         <div class="caption">
                             <h4><a href="#">${r.title}</a></h4>
+                            <h5>by <a href="#" style="color: cornflowerblue">${r.username}</a></h5>
                             <p class="truncate" style="width:100%">${r.description}</p>
-                            <h5 class="text-right p-1">${r.difficulty}</h5>
+                            <h5 class="text-right p-1">Difficulty: ${r.difficulty}</h5>
                         </div>
                         <div class="space-ten"></div>
                         <div class="btn-ground text-center mt-5">
