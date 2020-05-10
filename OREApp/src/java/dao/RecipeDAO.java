@@ -153,8 +153,9 @@ public class RecipeDAO {
         try (Connection connection = DBConnection.getInstance()) {
             search = search.toUpperCase();
             PreparedStatement pstmt = connection.prepareStatement(
-                    "SELECT * FROM recipes WHERE UPPER(title) LIKE ? ESCAPE '!'");
+                    "SELECT * FROM recipes WHERE UPPER(title) LIKE ? OR UPPER(tags) LIKE ? ESCAPE '!'");
             pstmt.setString(1, "%" + search + "%");
+            pstmt.setString(2, "%" + search + "%");
             ResultSet rs = pstmt.executeQuery();
             
             while(rs.next()){
