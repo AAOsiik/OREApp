@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-md-6 px-3">
                             <div class="caption">
-                                <h4><a href="#">${r.title}</a></h4>
+                                <h4><a href="RecipeDetailController?recipeID=${r.id}">${r.title}</a></h4>
                                 <h5>by <a href="#" style="color: cornflowerblue">${r.username}</a></h5>
                                 <p class="truncate" style="width:100%">${r.description}</p>
                                 <h5 class="text-right p-1">Difficulty: ${r.difficulty}</h5>
