@@ -5,7 +5,8 @@
  */
 package controllers;
 
-import dao.UserRecipeDAO;
+import dao.CommentDAO;
+import dao.RecipeDAO;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -14,16 +15,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.UserRecipe;
+import model.Comment;
+import model.Recipe;
 
 /**
  *
  * @author Kri
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/SearchController"})
-public class SearchController extends HttpServlet {
+@WebServlet(name = "RecipeDetailController", urlPatterns = {"/RecipeDetailController"})
+public class RecipeDetailController extends HttpServlet {
 
-    UserRecipeDAO recipeDAO = UserRecipeDAO.getInstance();
+    RecipeDAO recipeDAO = RecipeDAO.getInstance();
+    CommentDAO commentDAO = CommentDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,16 +40,21 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        
-        String search = request.getParameter("search");
-        List<UserRecipe> recipes = recipeDAO.searchCombinedRecipesInfo(search);
+        int recipeID = Integer.parseInt(request.getParameter("recipeID"));
+        int userID = -1;
+        if (request.getSession().getAttribute("userid") != null) {
+            userID = Integer.parseInt(request.getSession().getAttribute("userid").toString());
+        }
+        Recipe recipeDetail = recipeDAO.getRecipe(recipeID);
+        List<Comment> commentList = commentDAO.getComments(recipeID, userID);
 
-        request.getServletContext().setAttribute("RECIPES", recipes);
-        RequestDispatcher rd = request.getRequestDispatcher("RecipesView");
+        request.getSession().setAttribute("COMMENTS", commentList);
+        request.getSession().setAttribute("RECIPEDETAIL", recipeDetail);
+        RequestDispatcher rd = request.getRequestDispatcher("RecipeDetailView");
         rd.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

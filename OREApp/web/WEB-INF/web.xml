@@ -53,6 +53,16 @@
         <jsp-file>/recipes.jsp</jsp-file>
     </servlet>
     
+    <servlet>
+        <servlet-name>AddRecipeView</servlet-name>
+        <jsp-file>/addRecipe.jsp</jsp-file>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>RecipeDetailView</servlet-name>
+        <jsp-file>/recipeDetail.jsp</jsp-file>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
         <url-pattern>/Home</url-pattern>
@@ -72,5 +82,13 @@
     <servlet-mapping>
         <servlet-name>RecipesView</servlet-name>
         <url-pattern>/RecipesView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecipeDetailView</servlet-name>
+        <url-pattern>/RecipeDetailView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRecipeView</servlet-name>
+        <url-pattern>/AddRecipeView</url-pattern>
     </servlet-mapping>
 </web-app>

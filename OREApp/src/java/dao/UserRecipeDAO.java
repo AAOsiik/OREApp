@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import model.UserRecipe;
 import utils.DBConnection;
+
 /**
  *
  * @author Alexander
  */
 public class UserRecipeDAO {
-    
+
     private Connection connection;
     private static UserRecipeDAO instance;
 
@@ -38,20 +39,61 @@ public class UserRecipeDAO {
      * @return List of Recipes
      */
     public List<UserRecipe> getCombinedRecipesInfo() {
-        String sql =    "SELECT recipes.id," +
-                        "recipes.userid," +
-                        "users.username," +
-                        "recipes.title," +
-                        "recipes.description," +
-                        "recipes.category," +
-                        "recipes.difficulty," +
-                        "recipes.tags," +
-                        "recipes.picture" +
-                        " FROM recipes" +
-                        " LEFT JOIN users ON (recipes.userid=users.id);";
+        String sql = "SELECT recipes.id,"
+                + "recipes.userid,"
+                + "users.username,"
+                + "recipes.title,"
+                + "recipes.description,"
+                + "recipes.category,"
+                + "recipes.difficulty,"
+                + "recipes.tags,"
+                + "recipes.picture"
+                + " FROM recipes"
+                + " LEFT JOIN users ON (recipes.userid=users.id);";
         List<UserRecipe> recipes = new ArrayList<>();
         try (Connection connection = DBConnection.getInstance();
                 PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+            ResultSet rs = prepStmt.executeQuery();
+            while (rs.next()) {
+                UserRecipe userRecipe = new UserRecipe();
+                userRecipe.setId(rs.getInt("id"));
+                userRecipe.setUserId(rs.getInt("userid"));
+                userRecipe.setUsername(rs.getString("username"));
+                userRecipe.setTitle(rs.getString("title"));
+                userRecipe.setDescription(rs.getString("description"));
+                userRecipe.setCategory(rs.getString("category"));
+                userRecipe.setDifficulty(rs.getString("difficulty"));
+                userRecipe.setTags(rs.getString("tags"));
+                userRecipe.setPicture(rs.getString("picture"));
+
+                recipes.add(userRecipe);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return recipes;
+    }
+
+    public List<UserRecipe> searchCombinedRecipesInfo(String search) {
+        search = search.toUpperCase();
+        String sql = "SELECT recipes.id,"
+                + "recipes.userid,"
+                + "users.username,"
+                + "recipes.title,"
+                + "recipes.description,"
+                + "recipes.category,"
+                + "recipes.difficulty,"
+                + "recipes.tags,"
+                + "recipes.picture"
+                + " FROM recipes"
+                + " LEFT JOIN users ON (recipes.userid=users.id) "
+                + "WHERE UPPER(title) LIKE ? OR UPPER(tags) LIKE ? ESCAPE '!';";
+        List<UserRecipe> recipes = new ArrayList<>();
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+
+            prepStmt.setString(1, "%" + search + "%");
+            prepStmt.setString(2, "%" + search + "%");
             ResultSet rs = prepStmt.executeQuery();
             while (rs.next()) {
                 UserRecipe userRecipe = new UserRecipe();

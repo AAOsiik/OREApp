@@ -62,7 +62,7 @@ public class RecipeDAO {
         }
         return recipes;
     }
-    
+
     /**
      * Creates a new recipe
      *
@@ -149,7 +149,7 @@ public class RecipeDAO {
 
     public List<Recipe> searchRecipes(String search) {
         List<Recipe> recipes = new ArrayList<>();
-        
+
         try (Connection connection = DBConnection.getInstance()) {
             search = search.toUpperCase();
             PreparedStatement pstmt = connection.prepareStatement(
@@ -157,8 +157,8 @@ public class RecipeDAO {
             pstmt.setString(1, "%" + search + "%");
             pstmt.setString(2, "%" + search + "%");
             ResultSet rs = pstmt.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 Recipe recipe = new Recipe();
                 recipe.setId(rs.getInt("id"));
                 recipe.setUserId(rs.getInt("userid"));
@@ -177,4 +177,34 @@ public class RecipeDAO {
         return recipes;
     }
 
+    public Recipe getRecipe(int recipeID) {
+        Recipe recipe = new Recipe();
+
+        connection = DBConnection.getInstance();
+        try {
+            // Statement
+            Statement instr = connection.createStatement();
+            // Search for products
+            String sql = "SELECT * FROM recipes WHERE id = '" + recipeID + "'";
+            ResultSet rs = instr.executeQuery(sql);
+            if (rs.next()) {
+                // Recipe exists
+                recipe.setId(rs.getInt("id"));
+                recipe.setId(rs.getInt("id"));
+                recipe.setUserId(rs.getInt("userid"));
+                recipe.setTitle(rs.getString("title"));
+                recipe.setDescription(rs.getString("description"));
+                recipe.setCategory(rs.getString("category"));
+                recipe.setDifficulty(rs.getString("difficulty"));
+                recipe.setTags(rs.getString("tags"));
+                recipe.setPicture(rs.getString("picture"));
+                rs.close();
+                instr.clearBatch();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return recipe;
+    }
 }

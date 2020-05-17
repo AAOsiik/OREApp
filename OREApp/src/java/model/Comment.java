@@ -12,13 +12,17 @@ import java.io.Serializable;
  * @author Alexander
  */
 public class Comment implements Serializable {
-    
-    int userId;
-    int recipeId;
-    String comment;
 
-    public Comment(){}
-    
+    private int id;
+    private int userId;
+    private String username;
+    private int recipeId;
+    private String comment;
+    private int isMine;
+
+    public Comment() {
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -42,4 +46,29 @@ public class Comment implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIsMine() {
+        return isMine;
+    }
+
+    public void setIsMine(int isMine) {
+        this.isMine = isMine;
+    }
+
 }

@@ -19,8 +19,8 @@ import utils.DBConnection;
  *
  * @author Alexander
  */
-public class CommentDAO implements Serializable{
-    
+public class CommentDAO implements Serializable {
+
     private Connection connection;
     private static CommentDAO instance;
 
@@ -33,24 +33,30 @@ public class CommentDAO implements Serializable{
 
     private CommentDAO() {
     }
-    
+
     /**
      * Returns all available items depending
-     * 
+     *
      * @return List of Recipess
      */
-    public List<Comment> getComments() {
-        String sql = "select * from comments";
+    public List<Comment> getComments(int userid) {
+        String sql = "select * from comments c, users u where u.id=c.userid";
         List<Comment> comments = new ArrayList<>();
         try (Connection connection = DBConnection.getInstance();
                 PreparedStatement prepStmt = connection.prepareStatement(sql);) {
             ResultSet rs = prepStmt.executeQuery();
             while (rs.next()) {
                 Comment comment = new Comment();
+                comment.setId(rs.getInt("id"));
                 comment.setUserId(rs.getInt("userid"));
                 comment.setRecipeId(rs.getInt("recipeid"));
                 comment.setComment(rs.getString("comment"));
-
+                comment.setUsername(rs.getString("username"));
+                if (userid != -1 && comment.getUserId() == userid) {
+                    comment.setIsMine(1);
+                } else {
+                    comment.setIsMine(0);
+                }
                 comments.add(comment);
             }
         } catch (Exception e) {
@@ -58,28 +64,31 @@ public class CommentDAO implements Serializable{
         }
         return comments;
     }
-    
-    
+
     /**
      * Returns all available items depending on id
-     * 
+     *
      * @param id the Id
      * @return List of Recipess
      */
-    public List<Comment> getComments(int id) {
-        String sql = "select * from comments";
-        if (id > 0) {
-            sql += " where id = '"+ id +"'";
-        }
+    public List<Comment> getComments(int recipeid, int userid) {
+        String sql = "select * from comments c, users u where u.id=c.userid AND c.recipeid ='" + recipeid + "'";
         List<Comment> comments = new ArrayList<>();
         try (Connection connection = DBConnection.getInstance();
                 PreparedStatement prepStmt = connection.prepareStatement(sql);) {
             ResultSet rs = prepStmt.executeQuery();
             while (rs.next()) {
                 Comment comment = new Comment();
+                comment.setId(rs.getInt("id"));
                 comment.setUserId(rs.getInt("userid"));
                 comment.setRecipeId(rs.getInt("recipeid"));
                 comment.setComment(rs.getString("comment"));
+                comment.setUsername(rs.getString("username"));
+                if (userid != -1 && comment.getUserId() == userid) {
+                    comment.setIsMine(1);
+                } else {
+                    comment.setIsMine(0);
+                }
 
                 comments.add(comment);
             }
@@ -88,9 +97,8 @@ public class CommentDAO implements Serializable{
         }
         return comments;
     }
-    
-    
-     public int createComment(Comment comment) {
+
+    public int createComment(Comment comment) {
         // Create Product
         String sql = "INSERT INTO comments(userid, recipeid, comment) "
                 + "VALUES ( ? , ? , ? );";
@@ -116,6 +124,26 @@ public class CommentDAO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
+    }
+
+    public boolean deleteComment(int commentID) {
+
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement("DELETE FROM comments WHERE id=?;");) {
+            prepStmt.setInt(1, commentID);
+
+            // execute
+            prepStmt.executeUpdate();
+            // close
+            prepStmt.clearBatch();
+            connection.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -5,8 +5,9 @@
  */
 package controllers;
 
-import dao.UserRecipeDAO;
+import dao.CommentDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,16 +15,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.UserRecipe;
+import model.Comment;
 
 /**
  *
  * @author Kri
  */
-@WebServlet(name = "SearchController", urlPatterns = {"/SearchController"})
-public class SearchController extends HttpServlet {
+@WebServlet(name = "NewCommentController", urlPatterns = {"/NewCommentController"})
+public class NewCommentController extends HttpServlet {
 
-    UserRecipeDAO recipeDAO = UserRecipeDAO.getInstance();
+    CommentDAO commentDAO = CommentDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,16 +38,29 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        
-        String search = request.getParameter("search");
-        List<UserRecipe> recipes = recipeDAO.searchCombinedRecipesInfo(search);
+        String c = request.getParameter("comment");
+        int recipeID = Integer.parseInt(request.getParameter("recipeID"));
+        int userID = Integer.parseInt(request.getSession().getAttribute("userid").toString());
 
-        request.getServletContext().setAttribute("RECIPES", recipes);
-        RequestDispatcher rd = request.getRequestDispatcher("RecipesView");
+        Comment comment = new Comment();
+        comment.setComment(c);
+        comment.setRecipeId(recipeID);
+        comment.setUserId(userID);
+        comment.setUsername(request.getSession().getAttribute("user").toString());
+
+        int commentID = commentDAO.createComment(comment);
+
+        if (commentID != -1) {
+            List<Comment> commentList = commentDAO.getComments(recipeID,userID);
+            request.getSession().setAttribute("COMMENTS", commentList);
+        } else {
+            request.getSession().setAttribute("ERRORS", "Comment Error!");
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("RecipeDetailView");
         rd.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
