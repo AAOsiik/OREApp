@@ -139,11 +139,12 @@ public class UserDAO {
         try {
             PreparedStatement stm = connection.prepareStatement(
                     "UPDATE users "
-                    + "SET firstname = ?, lastname = ? "
+                    + "SET firstname = ?, lastname = ?, picture = ? "
                     + "WHERE username = ?");
             stm.setString(1, user.getFirstName());
             stm.setString(2, user.getLastName());
-            stm.setString(3, user.getUname());
+            stm.setString(3, user.getPicture());
+            stm.setString(4, user.getUname());
 
             stm.execute();
             stm.clearBatch();
@@ -172,6 +173,7 @@ public class UserDAO {
                 user.setFirstName(rs.getString("firstname"));
                 user.setLastName(rs.getString("lastname"));
                 user.setEmail(rs.getString("email"));
+                user.setPicture(rs.getString("picture"));
                 rs.close();
                 connection.close();
                 return user;
@@ -207,6 +209,31 @@ public class UserDAO {
         }
 
         return null;
+    }
+    
+        /**
+     * Adds image to existing user
+     *
+     * @param uname
+     * @param path
+     * @return
+     */
+    public boolean addPictureToUser(String uname, String path) {
+        // Add to Recipe
+        String sql = "UPDATE users SET picture = ? WHERE (username = ?);";
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+            prepStmt.setString(1, path);
+            prepStmt.setString(2, uname);
+            // execute
+            prepStmt.executeUpdate();
+            // close
+            prepStmt.clearBatch();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
     

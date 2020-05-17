@@ -22,12 +22,21 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private int isComplete;
+    private String picture;
 //    // TODO: how to best serialize them?
 //    private Address address;
 //    private List<Recipe> recipes;
 //    private List<Recipe> favorites;
 
     public User() {}
+    
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
     
     public int getId() {
         return id;
