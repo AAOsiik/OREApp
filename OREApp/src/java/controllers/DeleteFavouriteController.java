@@ -5,20 +5,27 @@
  */
 package controllers;
 
+import dao.RecipeDAO;
+import dao.UserRecipeDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Recipe;
 
 /**
  *
- * @author Alexander
+ * @author Kri
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "DeleteFavouriteController", urlPatterns = {"/DeleteFavouriteController"})
+public class DeleteFavouriteController extends HttpServlet {
+
+    UserRecipeDAO userRecipeDAO = UserRecipeDAO.getInstance();
+    RecipeDAO recipeDAO = RecipeDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,9 +38,21 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("user", null);
-        request.getSession().setAttribute("ERRORS", null);
-        request.getRequestDispatcher("Home").forward(request, response);
+
+        int recipeID = Integer.parseInt(request.getParameter("recipeID"));
+        int userID = Integer.parseInt(request.getSession().getAttribute("userid").toString());
+
+        if (!userRecipeDAO.removeFavourite(userID, recipeID)) {
+            request.getSession().setAttribute("ERRORS", "Error, cannot delete this favourite");
+        } else {
+            request.getSession().setAttribute("ERRORS", null);
+        }
+        List<Recipe> favs = recipeDAO.getFavouriteRecipes(userID);
+
+        request.getSession().setAttribute("FAVS", favs);
+
+        RequestDispatcher rd = request.getRequestDispatcher("FavouritesView");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

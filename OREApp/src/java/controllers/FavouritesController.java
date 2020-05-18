@@ -5,20 +5,27 @@
  */
 package controllers;
 
+import dao.RecipeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Recipe;
 
 /**
  *
- * @author Alexander
+ * @author Kri
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "FavouritesController", urlPatterns = {"/FavouritesController"})
+public class FavouritesController extends HttpServlet {
+    
+    RecipeDAO recipeDAO = RecipeDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,9 +38,14 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("user", null);
-        request.getSession().setAttribute("ERRORS", null);
-        request.getRequestDispatcher("Home").forward(request, response);
+        
+        List<Recipe> favs = new ArrayList<>();
+        int userID = Integer.parseInt(request.getSession().getAttribute("userid").toString());
+        favs = recipeDAO.getFavouriteRecipes(userID);
+        
+        request.getSession().setAttribute("FAVS", favs);
+        RequestDispatcher rd = request.getRequestDispatcher("FavouritesView");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

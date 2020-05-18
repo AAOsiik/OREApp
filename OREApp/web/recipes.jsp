@@ -25,7 +25,7 @@
                     <div class="row py-4 px-2" style="background-color: rgba(236, 235, 230, 0.9);border-bottom: 1px solid black;border-radius: 10px;">
                         <div class="col-md-6">
                             <div class="thumbnail">
-                                <img class="img-fluid img-thumbnail"  src="FileServlet?path=${r.picture}" alt="${r.title}" style="max-height: 250px;">
+                                <img class="img-fluid img-thumbnail"  src="FileServlet?path=${r.picture}" alt="${r.title}" style="max-height: 250px; max-width: 350px;">
                             </div>
                         </div>
                         <div class="col-md-6 px-3">

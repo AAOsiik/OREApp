@@ -57,6 +57,10 @@
         <servlet-name>AddRecipeView</servlet-name>
         <jsp-file>/addRecipe.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>FavouritesView</servlet-name>
+        <jsp-file>/favourites.jsp</jsp-file>
+    </servlet>
     
     <servlet>
         <servlet-name>RecipeDetailView</servlet-name>
@@ -90,5 +94,9 @@
     <servlet-mapping>
         <servlet-name>AddRecipeView</servlet-name>
         <url-pattern>/AddRecipeView</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FavouritesView</servlet-name>
+        <url-pattern>/FavouritesView</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -5,8 +5,10 @@
  */
 package controllers;
 
+import dao.UserRecipeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Alexander
+ * @author Kri
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "NewFavouriteController", urlPatterns = {"/NewFavouriteController"})
+public class NewFavouriteController extends HttpServlet {
+
+    UserRecipeDAO userRecipeDAO = UserRecipeDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,9 +35,20 @@ public class LogoutController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("user", null);
-        request.getSession().setAttribute("ERRORS", null);
-        request.getRequestDispatcher("Home").forward(request, response);
+
+        int userID = -1;
+        if (request.getSession().getAttribute("userid") != null) {
+            userID = Integer.parseInt(request.getSession().getAttribute("userid").toString());
+        }
+        int recipeid = Integer.parseInt(request.getParameter("recipeID"));
+
+        if (userID == -1 || userRecipeDAO.addFavouriteRecipe(userID, recipeid) == false) {
+            request.getSession().setAttribute("ERRORS", "Error, cannot add recipe to favourites");
+        } else {
+            request.getSession().setAttribute("ERRORS", null);
+        }
+        RequestDispatcher rd = request.getRequestDispatcher("RecipeDetailController?recipeID=" + recipeid);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

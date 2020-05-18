@@ -13,8 +13,8 @@ import java.util.List;
  *
  * @author Alexander
  */
-public class Recipe implements Serializable{
-    
+public class Recipe implements Serializable {
+
     int id;
     int userId;
     String title;
@@ -24,8 +24,8 @@ public class Recipe implements Serializable{
     String time;
     String tags;
     String picture;
-    
-    
+    int isFavourite;
+
     public int getId() {
         return id;
     }
@@ -33,7 +33,7 @@ public class Recipe implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public int getUserId() {
         return userId;
     }
@@ -41,7 +41,7 @@ public class Recipe implements Serializable{
     public void setUserId(int id) {
         this.userId = id;
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -97,4 +97,13 @@ public class Recipe implements Serializable{
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public int getIsFavourite() {
+        return isFavourite;
+    }
+
+    public void setIsFavourite(int isFavourite) {
+        this.isFavourite = isFavourite;
+    }
+
 }

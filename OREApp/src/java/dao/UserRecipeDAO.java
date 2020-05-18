@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Recipe;
 import model.UserRecipe;
 import utils.DBConnection;
 
@@ -113,5 +114,65 @@ public class UserRecipeDAO {
             e.printStackTrace();
         }
         return recipes;
+    }
+
+    public boolean addFavouriteRecipe(int userid, int recipeid) {
+        String sql = "INSERT INTO favourites(f_userid, recipeid) "
+                + "VALUES ( ? , ?);";
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+            prepStmt.setInt(1, userid);
+            prepStmt.setInt(2, recipeid);
+
+            // execute
+            prepStmt.executeUpdate();
+            // close
+            prepStmt.clearBatch();
+            connection.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean removeFavourite(int userID, int recipeID) {
+        String sql = "DELETE FROM favourites f WHERE f.f_userid=" + userID + " AND f.recipeid=" + recipeID + ";";
+        try (Connection connection = DBConnection.getInstance();
+                PreparedStatement prepStmt = connection.prepareStatement(sql);) {
+            // execute
+            prepStmt.executeUpdate();
+            // close
+            prepStmt.clearBatch();
+            connection.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isFavourite(int userid, int recipeid) {
+        String sql = "SELECT * FROM favourites F WHERE F.f_userid = " + userid + " AND F.recipeid = " + recipeid + ";";
+        connection = DBConnection.getInstance();
+        try {
+            // Statement
+            Statement instr = connection.createStatement();
+            // Search for products
+            ResultSet rs = instr.executeQuery(sql);
+            if (rs.next()) {
+                // Recipe exists
+                rs.close();
+                instr.clearBatch();
+                return true;
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

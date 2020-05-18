@@ -19,17 +19,17 @@ import utils.DBConnection;
  * @author Alexander
  */
 public class RecipeDAO {
-
+    
     private Connection connection;
     private static RecipeDAO instance;
-
+    
     public static RecipeDAO getInstance() {
         if (instance == null) {
             instance = new RecipeDAO();
         }
         return instance;
     }
-
+    
     private RecipeDAO() {
     }
 
@@ -54,7 +54,7 @@ public class RecipeDAO {
                 recipe.setDifficulty(rs.getString("difficulty"));
                 recipe.setTags(rs.getString("tags"));
                 recipe.setPicture(rs.getString("picture"));
-
+                
                 recipes.add(recipe);
             }
         } catch (Exception e) {
@@ -94,15 +94,15 @@ public class RecipeDAO {
             prepStmt.clearBatch();
             connection.close();
             return last_inserted_id;
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
-
+    
     public boolean recipeExists(String title) {
-
+        
         connection = DBConnection.getInstance();
         try {
             // Statement
@@ -116,7 +116,7 @@ public class RecipeDAO {
                 instr.clearBatch();
                 return true;
             }
-
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -146,10 +146,10 @@ public class RecipeDAO {
         }
         return false;
     }
-
+    
     public List<Recipe> searchRecipes(String search) {
         List<Recipe> recipes = new ArrayList<>();
-
+        
         try (Connection connection = DBConnection.getInstance()) {
             search = search.toUpperCase();
             PreparedStatement pstmt = connection.prepareStatement(
@@ -157,7 +157,7 @@ public class RecipeDAO {
             pstmt.setString(1, "%" + search + "%");
             pstmt.setString(2, "%" + search + "%");
             ResultSet rs = pstmt.executeQuery();
-
+            
             while (rs.next()) {
                 Recipe recipe = new Recipe();
                 recipe.setId(rs.getInt("id"));
@@ -168,7 +168,7 @@ public class RecipeDAO {
                 recipe.setDifficulty(rs.getString("difficulty"));
                 recipe.setTags(rs.getString("tags"));
                 recipe.setPicture(rs.getString("picture"));
-
+                
                 recipes.add(recipe);
             }
         } catch (Exception e) {
@@ -176,10 +176,10 @@ public class RecipeDAO {
         }
         return recipes;
     }
-
+    
     public Recipe getRecipe(int recipeID) {
         Recipe recipe = new Recipe();
-
+        
         connection = DBConnection.getInstance();
         try {
             // Statement
@@ -201,10 +201,39 @@ public class RecipeDAO {
                 rs.close();
                 instr.clearBatch();
             }
-
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return recipe;
+    }
+    
+    public List<Recipe> getFavouriteRecipes(int userid) {
+        
+        String sql = "SELECT * FROM recipes R, favourites F where R.id = F.recipeid AND F.f_userid = " + userid + ";";
+        List<Recipe> recipes = new ArrayList();
+        
+        try (Connection connection = DBConnection.getInstance()) {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                Recipe recipe = new Recipe();
+                recipe.setId(rs.getInt("id"));
+                recipe.setUserId(rs.getInt("userid"));
+                recipe.setTitle(rs.getString("title"));
+                recipe.setDescription(rs.getString("description"));
+                recipe.setCategory(rs.getString("category"));
+                recipe.setDifficulty(rs.getString("difficulty"));
+                recipe.setTags(rs.getString("tags"));
+                recipe.setPicture(rs.getString("picture"));
+                recipe.setIsFavourite(1);
+                
+                recipes.add(recipe);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return recipes;
     }
 }

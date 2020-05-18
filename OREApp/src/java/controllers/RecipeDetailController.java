@@ -7,6 +7,7 @@ package controllers;
 
 import dao.CommentDAO;
 import dao.RecipeDAO;
+import dao.UserRecipeDAO;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -27,6 +28,7 @@ public class RecipeDetailController extends HttpServlet {
 
     RecipeDAO recipeDAO = RecipeDAO.getInstance();
     CommentDAO commentDAO = CommentDAO.getInstance();
+    UserRecipeDAO userRecipeDAO = UserRecipeDAO.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,6 +48,12 @@ public class RecipeDetailController extends HttpServlet {
             userID = Integer.parseInt(request.getSession().getAttribute("userid").toString());
         }
         Recipe recipeDetail = recipeDAO.getRecipe(recipeID);
+        if (userRecipeDAO.isFavourite(userID, recipeID)) {
+            recipeDetail.setIsFavourite(1);
+        } else {
+            recipeDetail.setIsFavourite(0);
+        }
+
         List<Comment> commentList = commentDAO.getComments(recipeID, userID);
 
         request.getSession().setAttribute("COMMENTS", commentList);
